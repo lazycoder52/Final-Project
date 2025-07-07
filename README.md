@@ -1,23 +1,18 @@
-## Dynamic Pricing for Urban Parking Lots
+# Dynamic Pricing for Urban Parking Lots
 
-### 1. Project Overview
+## Project Overview
 
-This project implements a dynamic pricing engine for 14 urban parking lots using real-time data. The system leverages features such as occupancy, queue length, traffic congestion, special day indicators, and vehicle type to set parking prices that reflect current demand. The goal is to optimize utilization and revenue while ensuring fair and explainable pricing for users.
+This project implements a dynamic pricing engine for 14 urban parking lots using real-time data. The system uses features such as occupancy, queue length, traffic congestion, special day indicators, and vehicle type to set parking prices that reflect current demand. The goal is to optimize utilization and revenue while ensuring fair and explainable pricing for users.
 
-### 2. Tech Stacks Used
+## Tech Stacks Used
 
-- **Programming Language:** Python 3.x
-- **Data Processing:** pandas, numpy
-- **Visualization:** Bokeh
-- **(Optional/Documented) Real-Time Streaming:** Pathway
-- **Development Environment:** Jupyter Notebook / Google Colab
+- Python 3.x
+- pandas, numpy
+- Bokeh (visualization)
+- (Documented) Pathway (for real-time streaming)
+- Jupyter Notebook / Google Colab
 
-### 3. Architecture Diagram
-
-You can create an architecture diagram using Mermaid (for markdown) or any diagram tool. Here’s a Mermaid example you can paste into your README or markdown cell:
-
-
-Click to expand Mermaid Diagram (copy as-is into Markdown with Mermaid support)
+## Architecture Diagram
 
 ```mermaid
 flowchart TD
@@ -32,12 +27,10 @@ flowchart TD
     F --> I[Pathway Streaming (Optional)]
 ```
 
-
-### 4. Project Architecture and Workflow
+## Project Architecture and Workflow
 
 - **Data Ingestion:**  
-  - Loads historical or real-time parking data.
-  - Features include occupancy, capacity, queue length, traffic level, special day, vehicle type, and timestamp.
+  Loads parking data with features: occupancy, capacity, queue length, traffic level, special day, vehicle type, and timestamp.
 
 - **Preprocessing:**  
   - Maps categorical features to numeric values.
@@ -50,28 +43,27 @@ flowchart TD
   - **Demand-Based Model:** Uses a weighted sum of occupancy, queue, traffic, special day, vehicle type, and hour_fraction, with normalization and clamping for smooth, bounded prices.
 
 - **Simulation:**  
-  - Processes data chronologically for each parking lot.
-  - Updates and records prices at every time step.
+  Processes data chronologically for each parking lot, updating and recording prices at every time step.
 
 - **Visualization:**  
-  - Interactive Bokeh plots for each lot, showing price evolution and occupancy trends.
+  Interactive Bokeh plots for each lot, showing price evolution and occupancy trends.
 
 - **Export:**  
-  - Saves simulation results to CSV files for further analysis.
+  Saves simulation results to CSV files for further analysis.
 
 - **(Optional) Real-Time Streaming:**  
-  - Pathway integration for true real-time data ingestion and continuous price prediction.
+  Pathway integration for true real-time data ingestion and continuous price prediction.
 
-### 5. Detailed Explanation of Project Architecture and Workflow
+## Detailed Explanation of Project Architecture and Workflow
 
-#### Baseline Linear Model
+### Baseline Linear Model
 
 - Adjusts price up or down based on occupancy rate.
 - Formula:  
   $$ P_{t+1} = P_t + \alpha \cdot (\text{Occupancy}/\text{Capacity} - 0.5) $$
 - Price is clamped between 0.5× and 2× the base price.
 
-#### Demand-Based Model
+### Demand-Based Model
 
 - Computes a weighted sum of:
   - Occupancy rate
@@ -85,13 +77,13 @@ flowchart TD
   $$ \text{Price}_t = \text{Base Price} \times (1 + \lambda \cdot (\text{Normalized Demand} - 0.5)) $$
 - Price is clamped to [0.5×base, 2×base].
 
-#### Real-Time Simulation
+### Real-Time Simulation
 
 - Each parking lot is simulated independently.
 - Data is processed in chronological order to mimic real-time updates.
 - Results are visualized and exported for analysis.
 
-### 6. Any Other Relevant Documentation
+## Any Other Relevant Documentation
 
 - **Assumptions:**
   - All model coefficients are hand-tuned for initial deployment.
@@ -113,3 +105,5 @@ flowchart TD
 - **References:**
   - Pathway documentation for real-time streaming pipelines.
   - Bokeh documentation for interactive visualization.
+
+[1] https://pplx-res.cloudinary.com/image/private/user_uploads/54545471/30fd7ef3-8a30-4072-bb91-510a50a1b151/image.jpg
