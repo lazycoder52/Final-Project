@@ -14,7 +14,7 @@ This project implements a dynamic pricing engine for 14 urban parking lots using
 
 ## Architecture Diagram
 
-''''mermaid
+```mermaid
 flowchart TD
     A[Parking Data Source] --> B[Preprocessing & Feature Engineering]
     B --> C{Model Selection}
@@ -60,7 +60,7 @@ flowchart TD
 
 - Adjusts price up or down based on occupancy rate.
 - Formula:  
-  P_{t+1} = P_t + alpha.({Occupancy}/{Capacity} - 0.5) 
+    P_{t+1} = P_t + alpha.({Occupancy}/{Capacity} - 0.5)
 - Price is clamped between 0.5× and 2× the base price.
 
 ### Demand-Based Model
