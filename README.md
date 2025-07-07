@@ -14,6 +14,7 @@ This project implements a dynamic pricing engine for 14 urban parking lots using
 
 ## Architecture Diagram
 
+''''mermaid
 flowchart TD
     A[Parking Data Source] --> B[Preprocessing & Feature Engineering]
     B --> C{Model Selection}
