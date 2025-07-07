@@ -1,19 +1,115 @@
-# Final-Project
+## Dynamic Pricing for Urban Parking Lots
 
-Urban parking is a critical challenge in modern cities due to limited space and fluctuating demand. Traditional static pricing models often lead to inefficiencies—either overcrowding during peak times or underutilization during off-peak periods. As cities grow and vehicle numbers increase, the need for smarter, more adaptive parking management becomes essential.
+### 1. Project Overview
 
-Dynamic pricing for parking is an innovative approach that adjusts parking fees in real time based on actual demand, occupancy, traffic conditions, special events, and other relevant factors. This strategy aims to:
+This project implements a dynamic pricing engine for 14 urban parking lots using real-time data. The system leverages features such as occupancy, queue length, traffic congestion, special day indicators, and vehicle type to set parking prices that reflect current demand. The goal is to optimize utilization and revenue while ensuring fair and explainable pricing for users.
 
-Optimize the utilization of parking spaces.
-Reduce congestion and the time drivers spend searching for parking.
-Maximize revenue for parking operators while keeping prices fair for users.
-Encourage more efficient use of urban infrastructure and reduce environmental impact.
-In this project, we develop a data-driven dynamic pricing engine for 14 urban parking lots using real-time data streams. The system leverages features such as occupancy, queue length, traffic congestion, special day indicators, and vehicle type to set prices that reflect current demand. The goal is to create a robust, explainable, and real-time pricing model that benefits both operators and users, and can be extended to incorporate competitive pricing and rerouting logic in the future.
+### 2. Tech Stacks Used
 
-Motivation:
+- **Programming Language:** Python 3.x
+- **Data Processing:** pandas, numpy
+- **Visualization:** Bokeh
+- **(Optional/Documented) Real-Time Streaming:** Pathway
+- **Development Environment:** Jupyter Notebook / Google Colab
 
-Improve parking availability and reduce time spent searching for spaces.
-Balance supply and demand, especially during peak hours or special events.
-Provide a fair and transparent pricing mechanism that adapts to real-world conditions.
-Support city sustainability goals by reducing unnecessary driving and emissions.
-This notebook documents the step-by-step development, implementation, and analysis of dynamic pricing models for urban parking, including data preprocessing, model design, simulation, and visualization.
+### 3. Architecture Diagram
+
+You can create an architecture diagram using Mermaid (for markdown) or any diagram tool. Here’s a Mermaid example you can paste into your README or markdown cell:
+
+
+Click to expand Mermaid Diagram (copy as-is into Markdown with Mermaid support)
+
+```mermaid
+flowchart TD
+    A[Parking Data Source] --> B[Preprocessing & Feature Engineering]
+    B --> C{Model Selection}
+    C -- Baseline Model --> D[Occupancy-based Pricing]
+    C -- Demand Model --> E[Multi-Feature Demand Pricing]
+    D --> F[Price Output]
+    E --> F
+    F --> G[Visualization (Bokeh)]
+    F --> H[Export Results]
+    F --> I[Pathway Streaming (Optional)]
+```
+
+
+### 4. Project Architecture and Workflow
+
+- **Data Ingestion:**  
+  - Loads historical or real-time parking data.
+  - Features include occupancy, capacity, queue length, traffic level, special day, vehicle type, and timestamp.
+
+- **Preprocessing:**  
+  - Maps categorical features to numeric values.
+  - Combines date and time into a single datetime column.
+  - Engineers features like hour_fraction for time-of-day effects.
+  - Handles missing or invalid data.
+
+- **Model Selection:**  
+  - **Baseline Linear Model:** Adjusts price based solely on occupancy rate.
+  - **Demand-Based Model:** Uses a weighted sum of occupancy, queue, traffic, special day, vehicle type, and hour_fraction, with normalization and clamping for smooth, bounded prices.
+
+- **Simulation:**  
+  - Processes data chronologically for each parking lot.
+  - Updates and records prices at every time step.
+
+- **Visualization:**  
+  - Interactive Bokeh plots for each lot, showing price evolution and occupancy trends.
+
+- **Export:**  
+  - Saves simulation results to CSV files for further analysis.
+
+- **(Optional) Real-Time Streaming:**  
+  - Pathway integration for true real-time data ingestion and continuous price prediction.
+
+### 5. Detailed Explanation of Project Architecture and Workflow
+
+#### Baseline Linear Model
+
+- Adjusts price up or down based on occupancy rate.
+- Formula:  
+  $$ P_{t+1} = P_t + \alpha \cdot (\text{Occupancy}/\text{Capacity} - 0.5) $$
+- Price is clamped between 0.5× and 2× the base price.
+
+#### Demand-Based Model
+
+- Computes a weighted sum of:
+  - Occupancy rate
+  - Queue length (normalized)
+  - Traffic level
+  - Special day indicator
+  - Vehicle type weight
+  - Hour fraction (time of day)
+- Normalizes demand using tanh for smoothness.
+- Updates price:  
+  $$ \text{Price}_t = \text{Base Price} \times (1 + \lambda \cdot (\text{Normalized Demand} - 0.5)) $$
+- Price is clamped to [0.5×base, 2×base].
+
+#### Real-Time Simulation
+
+- Each parking lot is simulated independently.
+- Data is processed in chronological order to mimic real-time updates.
+- Results are visualized and exported for analysis.
+
+### 6. Any Other Relevant Documentation
+
+- **Assumptions:**
+  - All model coefficients are hand-tuned for initial deployment.
+  - Unknown vehicle types default to a weight of 1.0.
+  - Data-driven normalization is used for queue length.
+  - Prices are always clamped to prevent extreme values.
+  - Rows with missing or invalid data are skipped.
+
+- **Limitations:**
+  - No competitive pricing (Model 3) or rerouting logic implemented.
+  - Batch simulation is used; Pathway streaming is documented but not fully deployed.
+  - Model parameters are not data-optimized.
+
+- **Future Work:**
+  - Integrate competitive pricing and rerouting logic.
+  - Tune coefficients using historical data and cross-validation.
+  - Deploy the full pipeline with Pathway for live, real-time updates.
+
+- **References:**
+  - Pathway documentation for real-time streaming pipelines.
+  - Bokeh documentation for interactive visualization.
